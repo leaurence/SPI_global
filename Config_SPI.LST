@@ -1,0 +1,66 @@
+C51 COMPILER V9.52.0.0   CONFIG_SPI                                                        05/02/2018 11:15:59 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE CONFIG_SPI
+OBJECT MODULE PLACED IN Config_SPI.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Config_SPI.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include <c8051f020.h>
+   2          #include "Config_SPI.h"
+   3          #include "intrins.h"
+   4          #include <string.h>
+   5          
+   6          void Config_SPI(void){
+   7   1        
+   8   1        SPI0CFG=0x87; // Configuration de registre
+   9   1        SPI0CN=0x01; //On active la SPI en slave
+  10   1        SPI0CKR=0x36; //pour avoir fSCK = 200 kHz
+  11   1        SPIF=0; //Drapeau de fin de transmission activé (pour pouvoir débuter une autre transmission)
+  12   1      
+  13   1      }
+  14          
+  15          
+  16          char putcharSPI(char c) {
+  17   1        SPI0DAT = c; // mise de caractere dans la memoire
+  18   1        return c;
+  19   1      }
+  20          
+  21          char getcharSPI(){
+  22   1        char caractererecu;
+  23   1        if (SPIF==0)  //Si le drapeau d'interruption n'est pas prêt (si réception pas terminéé)
+  24   1          return 0;
+  25   1        else{
+  26   2          caractererecu=SPI0DAT; // recuperation du caractere recu
+  27   2          SPIF=0;
+  28   2          return caractererecu;
+  29   2        }
+  30   1      }
+  31          
+  32          char test(void){  
+  33   1        int j=0;
+  34   1        char chainerecu[30];
+  35   1        
+  36   1        if (SPIF==1){ 
+  37   2          chainerecu[j]=getcharSPI();
+  38   2          putcharSPI(chainerecu[j]);
+  39   2          j++;
+  40   2        }
+  41   1        return 0;
+  42   1      }
+  43          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     58    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      30
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,7 @@
+"STARTUP.obj",
+"Config_GPIO.obj",
+"Config_SPI.obj",
+"main.obj",
+"Config_Global.obj" 
+TO "projetTR_SPI_Slave" 
+RAMSIZE(256) 

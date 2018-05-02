@@ -1,0 +1,44 @@
+C51 COMPILER V9.52.0.0   CONFIG_GPIO                                                       05/02/2018 11:15:59 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE CONFIG_GPIO
+OBJECT MODULE PLACED IN Config_GPIO.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Config_GPIO.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include <c8051f020.h>
+   2          #include "Config_Global.h"
+   3          #include "Config_GPIO.h"
+   4          #include "Config_SPI.h"
+   5          
+   6          void Config_GPIO_Slave(void)
+   7          {
+   8   1        P0=0xff;
+   9   1        XBR1=0x80;//sysclk routed to port pin
+  10   1        P1=0x03;
+  11   1        P1MDOUT|=0x01;// P1.0 en PP
+  12   1        P1MDOUT&=0x02;// P1.1 en OD pour Px.y->NSS
+  13   1        P0MDOUT &=0x34; // P0.2(SCK) P0.5(NSS) P0.4(MOSI)en OD 
+  14   1        P0MDOUT |=0x08; //P0.3(MISO)en PP
+  15   1        XBR0 =0x06;// Activation UART et SPI
+  16   1        XBR2 =0x44; // Activation UART1 et Crossbar
+  17   1      }
+  18          
+  19          void Gestion_GPIO (void){
+  20   1        Config_GPIO_Slave();
+  21   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     31    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
